@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [qrState, setQrState] = useState("");
+  const [qrImage, setQrImage] = useState(null);
+
+  const handleClilck = () => {
+    if (qrState !== "") {
+      setQrImage(
+        `http://api.qrserver.com/v1/create-qr-code/?data=${qrState}&size=150x150`
+      );
+    }
+  };
+  const handleChange = (e) => {
+    setQrState(e.target.value);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="generatorForm">
+        <label>Simplest QR</label>
+        <input
+          type="text"
+          className="qrinput"
+          value={qrState}
+          onChange={handleChange}
+        />
+        <button className="btn" onClick={handleClilck}>
+          Generate
+        </button>
+        <div className="generatedqr">
+          {qrImage ? <img src={qrImage} alt="qr" /> : null}
+        </div>
+      </div>
     </div>
   );
 }
